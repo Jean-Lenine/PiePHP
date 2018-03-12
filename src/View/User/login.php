@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<form method="POST" action="../../../index.php">
+<form method="GET" action="/PiePHP/user/login">
   <div class="container">
     <h1>Connexion</h1>
     <label for="mail">Email</label>
@@ -22,10 +13,3 @@
     </label>
   </div>
 </form>
-<pre>
-<?php
-var_dump($_POST, $_GET, $_SERVER);
-?>
-</pre>
-</body>
-</html>
