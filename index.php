@@ -9,7 +9,7 @@ $app = new Core\Core();
 $app->run();
 
 echo"<pre>\n"."\n"."\n"."-------------------------"."\n"."\n"."\n</pre>";
-$app = new src\Controller\UserController();
-$app->addAction();
+// $app = new src\Controller\UserController();
+// $app->addAction();
 
 ?>

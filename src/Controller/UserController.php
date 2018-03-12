@@ -9,27 +9,27 @@ class UserController extends Controller{
 		echo "it works";
 	}
 	public function loginAction() {
-		$param = $this->request->getQueryParams();
-		if(!$param)
+		// $param = $this->request->getQueryParams();
+		// if(!$param)
 			$this -> render("login");
-		else
-		{			
-			$register = new Model\UserModel($param);
-			if($register -> checkAuth())
-				var_dump("oui");
-			else
-				var_dump("non");
-		}
+		// else
+		// {			
+			// $register = new Model\UserModel($param);
+			// if($register -> checkAuth())
+				// var_dump("oui");
+			// else
+				// var_dump("non");
+		// }
 	}
 	public function registerAction() {
-		$param = $this->request->getQueryParams();
-		if(!$param)
+		// $param = $this->request->getQueryParams();
+		// if(!$param)
 			$this -> render("register");
-		else
-		{
-			$register = new Model\UserModel($param);
- 			$register->save();
-		}
+		// else
+		// {
+			// $register = new Model\UserModel($param);
+ 			// $register->save();
+		// }
 	}
 }
 ?>
