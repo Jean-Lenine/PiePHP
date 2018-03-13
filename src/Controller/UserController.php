@@ -1,35 +1,39 @@
 <?php
+
 namespace src\Controller;
-use Core\Controller;
-class UserController extends Controller{
-	public function indexAction() {
-		echo "yes, it works";
+use Model;
+
+class UserController extends \Core\Controller{
+	
+	public function addAction(){
+		echo __CLASS__ . " [addAction]" . PHP_EOL;
 	}
-	public function addAction() {
-		echo "it works";
+	
+	public function indexAction(){
+		echo __CLASS__ . " [indexAction]" . PHP_EOL;
 	}
-	public function loginAction() {
-		// $param = $this->request->getQueryParams();
-		// if(!$param)
-			$this -> render("login");
-		// else
-		// {			
-			// $register = new Model\UserModel($param);
-			// if($register -> checkAuth())
-				// var_dump("oui");
-			// else
-				// var_dump("non");
-		// }
-	}
+	
 	public function registerAction() {
-		// $param = $this->request->getQueryParams();
-		// if(!$param)
-			$this -> render("register");
-		// else
-		// {
-			// $register = new Model\UserModel($param);
- 			// $register->save();
-		// }
+		if(isset($_POST['register_btn'])) {
+			
+			// var_dump($this->request->query);
+			$register = new \src\Model\UserModel($_POST['register_email'], $_POST['register_pwd']);
+			$register->save();
+		}
+		else {
+			// var_dump($this->request->query);
+			$this->render("register"); // donne la vue au controller
+		}
 	}
+	
+	public function logInAction() {
+		if(isset($_POST['login_btn'])) {
+			$login = new \src\Model\UserModel($_POST['login_email'], $_POST['login_pwd']);
+			$login->connect();
+		}
+		else {
+			$this->render("login"); // donne la vue au controller
+		}
+	}
+	
 }
-?>
