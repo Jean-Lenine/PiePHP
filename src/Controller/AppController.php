@@ -9,6 +9,7 @@ class AppController extends \Core\Controller{
 	}
 	
 	public function indexAction(){
-		echo __CLASS__ . " [indexAction - Error actuellement]" . PHP_EOL;
+		echo __CLASS__ . "[indexAction erreur 404]" . PHP_EOL;
+
 	}
 }

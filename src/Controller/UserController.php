@@ -14,11 +14,11 @@ class UserController extends \Core\Controller{
 	}
 	
 	public function registerAction() {
-		if(isset($_POST['register_btn'])) {
+		if(isset($_POST['submit'])) {
 			
 			// var_dump($this->request->query);
-			$register = new \src\Model\UserModel($_POST['register_email'], $_POST['register_pwd']);
-			$register->save();
+			$register = new \src\Model\UserModel($this->request->query);
+			$register->create();
 		}
 		else {
 			// var_dump($this->request->query);
