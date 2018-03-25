@@ -8,7 +8,12 @@ class Autoloader{
 
 	static function autoload($class){
 		$path = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-		require_once($path . '.php');
+		if(is_file($path.".php")) {
+			require_once($path . '.php');
+		}
+		// else {
+			// header('Location: ');
+		// }
 	}
 }
 

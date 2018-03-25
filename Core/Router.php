@@ -1,6 +1,6 @@
 <?php
-
 namespace Core;
+
 class Router{
 	private static $routes;
 	
@@ -17,6 +17,22 @@ class Router{
 			return self::$routes[$url];
 		}
 		else {
+			
+			// Routeur Static
+			// $staticURL = explode('/', $url);
+			// array_shift($staticURL);
+			// $action = $staticURL[1] ?? 'default';
+			
+			// $url = array('controller' => $staticURL[0], 'action' => $action);
+			
+			// if(class_exists("src\Controller\\".ucfirst($url['controller'])."Controller")) {
+				// if(method_exists("src\Controller\\".ucfirst($url['controller'])."Controller", $url['action']."Action")) {
+					// return $url;
+				// }
+			// }
+			// else {
+				// return self::$routes["/404"];
+			// }
 			return self::$routes["/404"];
 		}
 	}

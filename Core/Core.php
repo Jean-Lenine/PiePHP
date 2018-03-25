@@ -14,14 +14,12 @@ class Core{
 		}
 		else {
 			foreach ($tab_url as $value) {
-
 				$value = strpos($value, "?") ? strstr($value, "?" , true) : $value;
-
 				$url .= '/'.$value;
 			}
 		}
 		$url = Router::get($url);
-		$this->getUrl($url);
+		$this->getUrl($url);	
 	}
 	
 	public function getUrl($url) {

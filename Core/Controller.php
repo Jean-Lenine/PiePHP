@@ -1,5 +1,4 @@
 <?php
-
 namespace Core;
 
 class Controller {
@@ -8,8 +7,8 @@ class Controller {
 	
 	public function __construct(){
 		$this->request = new Request();
-		$this->request->getParams();
-		return $this->request;
+		return $this->request = $this->request->getParams();
+		
 	}
 
 	public function __destruct() {

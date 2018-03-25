@@ -1,5 +1,6 @@
 <?php
 namespace Core;
+use PDO;
 
 class ORM{
 	private $bdd;
@@ -14,18 +15,20 @@ class ORM{
 	}
 	
 	// retourne un id
-	public function create($table, $fields) {
-		$i = 0;
+	public function create() {
+		$table = $this->table; // users
+		$fields = $this->getPublicVars(); // array
 
+		$i = 0;
 		$insert = "(";
 		$values = "(";
-		while($i < (count($fields) - 1)){
+		while($i < (count($fields))){
 			++$i;
 			$insert .= "`".key($fields)."`";
 			$values .= ":".key($fields)."";
 			next($fields);
 
-			if($i != (count($fields) -1)){
+			if($i != (count($fields))){
 				$insert .= ", ";
 				$values .= ", ";
 			}
@@ -37,12 +40,11 @@ class ORM{
 		VALUES " . $values . ";";
 
 		$exec = $this->bdd->prepare($query);
-
 		reset($fields);
 
 		$i = 0;	
 		$bind = [];
-		while($i < (count($fields) - 1)) {
+		while($i < (count($fields))) {
 			++$i;
 			$bind[key($fields)] = current($fields);
 			next($fields);
@@ -54,16 +56,19 @@ class ORM{
 		else {
 			return false;
 		}
-        // var_dump($this->params);
 	}
+
 	// retourne un tableau
-	public function read($table, $id) {
+	public function read($id, $table = null) {
+		if($table == null) {
+			$table = $this->table;
+		}
+		
 		$select = "WHERE id = :id";
 		$query = "SELECT * FROM " . $table . " " . $select . "";
 		$exec = $this->bdd->prepare($query);
 		if($exec->execute(array('id' => $id))) {
-			if($row = $exec->fetch()){
-                // var_dump($row);
+			if($row = $exec->fetch(PDO::FETCH_ASSOC)){
 				return $row;
 			}
 			else {
@@ -73,8 +78,12 @@ class ORM{
 	}
 	
 	// retourne un booléen
-	public function update($table, $id, $fields) {
+	public function update() {
+		$table = $this->table;
+		$fields = $this->getPublicVars(); // Usefull in future
+		
 		$where = "WHERE id = :id";
+		
 		$set = '';
 		$i = 0;
 		while($i < (count($fields))) {
@@ -83,14 +92,12 @@ class ORM{
 			next($fields);
 			
 			if($i != (count($fields))){
-                var_dump($fields);
 				$set .= ", ";
 			}
 		}
 		$query = "UPDATE ".$table." SET ".$set. " ". $where;
-		
 		$exec = $this->bdd->prepare($query);
-		if($exec->execute(array('id' => $id))) {
+		if($exec->execute(array('id' => $this->id))) {
 			return true;
 		}
 		else {
@@ -99,11 +106,13 @@ class ORM{
 	}
 	
 	// retourne un booléen
-	public function delete($table, $id) {
+	public function delete() {
+		$table = $this->table;
+		
 		$query = "DELETE FROM ".$table . " WHERE id = :id";
 		$exec = $this->bdd->prepare($query);
 
-		if($exec->execute(array('id' => $id))){
+		if($exec->execute(array('id' => $this->id))){
 			return true;
 		}
 		else {
@@ -112,20 +121,32 @@ class ORM{
 	}
 	
 	// retourne un tableau d'enregistrements
-	public function find($table, $params = array(
-		'WHERE' => '1', 'ORDER BY' => 'id ASC', 'LIMIT' => '')) {
+	public function find($params = array(
+		'WHERE' => '1', 'ORDER BY' => 'id ASC', 'LIMIT' => ''), $table = null) {
+		if($table == null) {
+			$table = $this->table;
+		}
 			
-		$select = "SELECT * FROM ".$table." ";
+		$query = "SELECT * FROM ".$table." ";
 		foreach ($params as $key => $value) {
 			if($value != ""){
-				$select .= $key." ".$value." ";
+				$query .= $key." ".$value." ";
 			}
 		}
-		if($reponse = $this->bdd->query($select)){	
-			return $reponse->fetchAll();
+		$exec = $this->bdd->prepare($query);
+		
+		if($exec->execute()){	
+			return $exec->fetchAll(PDO::FETCH_ASSOC);
 		}
 		else {
 			return false;
 		}
+	}
+	
+	public function getPublicVars(){
+		function get($object) {
+			return get_object_vars($object);
+		}
+		return get($this);
 	}
 }
